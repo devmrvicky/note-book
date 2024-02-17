@@ -24,19 +24,22 @@ const useSave = async (name, data, currentDir, dispatch) => {
     if (!name) return false;
     const collectionId = getCollectionId(name);
     if (collectionId) {
-      const createdObOnDB = await dbService.createDocument(data, collectionId);
+      const createdDataOnDB = await dbService.createDocument(
+        data,
+        collectionId
+      );
       const prepareData = removeDollarSign(currentDir);
       // here we an assume updateNote method as updateDocument
       const updatedCurrentDir = await dbService.updateDocument(
         currentDir.$id,
-        { ...prepareData, ids: [createdObOnDB.$id, ...prepareData.ids] },
+        { ...prepareData, ids: [createdDataOnDB.$id, ...prepareData.ids] },
         env.appwriteFolderCollectionId
       );
       dispatch(updateCurrentDir(updatedCurrentDir));
       if (name === "note") {
-        dispatch(addNote(createdObOnDB));
+        dispatch(addNote(createdDataOnDB));
       } else if (name === "folder") {
-        dispatch(updateFolders(createdObOnDB));
+        dispatch(updateFolders(createdDataOnDB));
       }
       return new SavedObj(true);
     } else {

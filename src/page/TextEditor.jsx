@@ -17,6 +17,7 @@ import { toggle } from "@/features/pageSlice";
 import dbService from "@/appwrite/databaseService";
 import removeDollarSign from "@/methods/removeDollarSign";
 import useSave from "@/methods/useSave";
+import useUpdateData from "@/methods/useUpdateData";
 
 const TextEditor = () => {
   const [loading, setLoading] = useState(false);
@@ -42,18 +43,11 @@ const TextEditor = () => {
         if (currentNoteTitle) {
           const note = notes.find((note) => note.title === currentNoteTitle);
           if (note) {
-            // if note exist then perform updation of note
-            const prepareData = removeDollarSign(noteObj);
-            // console.log(prepareData);
-            const updatedNote = await dbService.updateNote(
-              note.$id,
-              prepareData
-            );
-            if (updatedNote) {
-              dispatch(updateNote(updatedNote));
-            }
+            // update note
+            await useUpdateData(note, noteObj, dispatch);
           } else {
-            await useSave('note', noteObj, currentDir, dispatch)
+            // create note
+            await useSave("note", noteObj, currentDir, dispatch);
           }
           navigate(`/notes/${currentNoteTitle}`);
           dispatch(setCurrentNoteTitle(""));
