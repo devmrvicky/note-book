@@ -14,6 +14,10 @@ import { IoSettings, IoSettingsOutline } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoDocumentText } from "react-icons/io5";
 import { ModeToggle } from "./theme/ModeToggle";
+import { IoBugOutline } from "react-icons/io5";
+import { IoBugSharp } from "react-icons/io5";
+import { FaRegLightbulb } from "react-icons/fa6";
+import { FaLightbulb } from "react-icons/fa";
 
 const menus = [
   {
@@ -56,6 +60,21 @@ const menus = [
   },
 ];
 
+const extraMenus = [
+  {
+    name: "Report a bug",
+    path: "/report-bug",
+    icon: <IoBugOutline className="w-4 h-4" />,
+    fillIcon: <IoBugSharp className="w-4 h-4" />,
+  },
+  {
+    name: "suggestion a feature",
+    path: "/feature-suggest",
+    icon: <FaRegLightbulb className="w-4 h-4" />,
+    fillIcon: <FaLightbulb className="w-4 h-4" />,
+  },
+];
+
 const Aside = () => {
   return (
     <aside className="md:w-60 w-16 border-r h-screen py-4 px-2 pt-8 fixed z-40 dark:bg-black bg-white overflow-hidden max-[400px]:fixed bottom-0 left-0 right-0 max-[400px]:w-full max-[400px]:bg-[aliceblue] max-[400px]:h-[56px] max-[400px]:p-0">
@@ -73,6 +92,7 @@ const Aside = () => {
           justifyItems="justify-start max-[400px]:justify-center"
           className="min-[400px]:flex-1 overflow-auto before:content-['Menus'] before:text-xs max-[400px]:before:hidden min-[400px]:py-4 before:text-zinc-500 flex-nowrap"
         >
+          {/* main menus */}
           {menus.map(({ path, name, icon, fillIcon, className }) => (
             <NavLink
               to={path}
@@ -100,6 +120,33 @@ const Aside = () => {
               }
             </NavLink>
           ))}
+          {/* extra menu */}
+          <div className="extra-menus flex flex-col gap-1 before:content-['options'] before:text-xs max-[400px]:before:hidden min-[400px]:py-4 before:text-zinc-500">
+            {extraMenus.map(({ path, name, icon, fillIcon }) => (
+              <NavLink
+                to={path}
+                key={name}
+                className={({ isActive }) =>
+                  isActive
+                    ? `px-3 py-2 dark:text-[#aaaaaa] bg-[#1d1d1d] rounded-md text-[.7rem] flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center`
+                    : `px-3 py-2 dark:text-[#747373] dark:hover:text-[#aaaaaa] hover:bg-[#1d1d1d] rounded-md text-[.7rem] flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center`
+                }
+              >
+                {({ isActive }) =>
+                  isActive ? (
+                    <>
+                      {fillIcon}{" "}
+                      <span className="md:block hidden ">{name}</span>
+                    </>
+                  ) : (
+                    <>
+                      {icon} <span className="md:block hidden ">{name}</span>
+                    </>
+                  )
+                }
+              </NavLink>
+            ))}
+          </div>
         </FlexBox>
         <ModeToggle />
         <Auth />

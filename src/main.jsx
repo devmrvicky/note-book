@@ -11,9 +11,11 @@ import {
 import {
   Docs,
   ErrorPage,
+  FeatureSuggest,
   IndividualNote,
   LoginForm,
   Note,
+  ReportBug,
   SignupForm,
   TextEditor,
 } from "./page/index.page.js";
@@ -89,6 +91,22 @@ const router = createBrowserRouter(
         element={
           <AuthLayout authentication={true}>
             <Docs />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/report-bug"
+        element={
+          <AuthLayout authentication={true}>
+            <ReportBug />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/feature-suggest"
+        element={
+          <AuthLayout authentication={true}>
+            <FeatureSuggest />
           </AuthLayout>
         }
       />

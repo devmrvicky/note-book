@@ -50,24 +50,17 @@
   }
 }
 
-@media screen and (max-width: 480px) {
-  /* .tox-menubar {
-    position: absolute !important;
-    border: 1px solid !important;
-    display: flex;
-    flex-direction: column;
-    padding-left: 0 !important;
-    left: 50px;
-    top: 10px;
-  }
+/* bug report page layout */
+.bug-report-form {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 10px;
+  grid-template-rows: auto auto auto auto;
+}
 
-  .tox .tox-toolbar_primary {
-    position: fixed !important;
-    bottom: 0px !important;
-    width: 100% !important;
-  } */
-
-
+.bug-img {
+  grid-column: 2 / -1;
+  grid-row: 1 / -1;
 }
 
 @layer base {

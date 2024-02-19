@@ -8,6 +8,8 @@ import TextEditor from "./TextEditor";
 import ErrorPage from "./ErrorPage";
 import LoadingPage from "./LoadingPage";
 import Docs from "./Docs";
+import FeatureSuggest from "./FeatureSuggest";
+import ReportBug from "./ReportBug";
 
 export {
   Home,
@@ -20,4 +22,6 @@ export {
   IndividualNote,
   LoadingPage,
   Docs,
+  FeatureSuggest,
+  ReportBug
 };

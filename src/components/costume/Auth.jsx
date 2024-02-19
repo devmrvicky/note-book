@@ -47,7 +47,7 @@ const Auth = () => {
     <Popover>
       <PopoverTrigger>
         <FlexBox
-          className="w-full md:border rounded px-0 md:px-3 h-14 md:hover:bg-zinc-400/10 cursor-pointer min-[400px]:mt-auto max-[400px]:w-14"
+          className="w-full md:border rounded px-0 md:px-3 h-14 md:hover:bg-zinc-400/10 cursor-pointer min-[400px]:mt-auto max-[400px]:w-14 flex-nowrap"
           justifyItems="md:justify-start justify-center"
         >
           <Avatar>
