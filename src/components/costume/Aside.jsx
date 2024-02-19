@@ -18,6 +18,8 @@ import { IoBugOutline } from "react-icons/io5";
 import { IoBugSharp } from "react-icons/io5";
 import { FaRegLightbulb } from "react-icons/fa6";
 import { FaLightbulb } from "react-icons/fa";
+import { PiDevices } from "react-icons/pi";
+import { PiDevicesFill } from "react-icons/pi";
 
 const menus = [
   {
@@ -72,6 +74,12 @@ const extraMenus = [
     path: "/feature-suggest",
     icon: <FaRegLightbulb className="w-4 h-4" />,
     fillIcon: <FaLightbulb className="w-4 h-4" />,
+  },
+  {
+    name: "dev",
+    path: "/dev",
+    icon: <PiDevices className="w-4 h-4" />,
+    fillIcon: <PiDevicesFill className="w-4 h-4" />,
   },
 ];
 

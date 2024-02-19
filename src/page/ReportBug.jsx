@@ -1,9 +1,15 @@
-import { CostumeFormField } from "@/components/index.components";
+import { CostumeFormField, SubmitBtn } from "@/components/index.components";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { changeCurrentPage } from "@/features/pageSlice";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
+import dbService from "@/appwrite/databaseService";
+import env from "@/env/env";
+import { useState } from "react";
+import BugObj from "@/obj-classes/bugObj";
+
 // Get browser name
 const getBrowserName = () => {
   const userAgent = navigator.userAgent;
@@ -43,13 +49,29 @@ const getUserDeviceInfo = () => {
 };
 
 const ReportBug = () => {
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const { userData } = useSelector((store) => store.auth);
   const form = useForm();
   const dispatch = useDispatch();
   dispatch(changeCurrentPage("Bugs report"));
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const deviceInfo = getUserDeviceInfo();
-    console.log(deviceInfo);
+    try {
+      setLoading(true);
+      const bugData = new BugObj(data, userData.$id, userData.name);
+      // console.log(bugData);
+      await dbService.createDocument(bugData, env.appwriteBugCollectionId);
+      toast({
+        title: "Your bug submitted successfully!",
+        description: data.title,
+      });
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,7 +94,7 @@ const ReportBug = () => {
           <CostumeFormField
             formInput="input"
             type="text"
-            name="bug-title"
+            name="title"
             label="Bug title"
             placeholder="Enter Bug Title Here"
             description="Provide a brief, descriptive title that summarizes the bug you encountered. This will help us quickly identify and prioritize the issue for resolution."
@@ -81,7 +103,7 @@ const ReportBug = () => {
           {/* description of bug */}
           <CostumeFormField
             formInput="textarea"
-            name="bug-description"
+            name="bugDescription"
             label="Write bug description"
             placeholder="Please describe the bug in detail.."
             description="Detail the bug you encountered here to help us swiftly address and resolve it."
@@ -91,7 +113,7 @@ const ReportBug = () => {
           <div className="bug-img border">
             <CostumeFormField
               type="file"
-              name="bug-screenshot"
+              name="bugImg"
               label="Bug screenshot"
               description="Attach a screenshot of the bug to provide visual context and help our team better understand the issue. Accepted file formats include .png, .jpg, and .gif. Maximum file size is 5MB."
               form={form}
@@ -100,11 +122,12 @@ const ReportBug = () => {
           {/* choose */}
           <CostumeFormField
             formInput="radio-group"
+            name="priorityLevel"
             label="priority level of the bug"
             form={form}
             radioItems={["Critical", "High", "Medium", "Low"]}
           />
-          <Button type="submit">Bug report submit</Button>
+          <SubmitBtn loading={loading} btnTitle="Report bug" />
         </form>
       </Form>
     </div>

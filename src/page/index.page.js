@@ -10,6 +10,11 @@ import LoadingPage from "./LoadingPage";
 import Docs from "./Docs";
 import FeatureSuggest from "./FeatureSuggest";
 import ReportBug from "./ReportBug";
+// developer page
+import DevLayout from "./dev/DevLayout"
+import Dev from "./dev/Dev"
+import DevRequests from "./dev/DevRequests"
+import DevBugRequests from "./dev/DevBugRequests";
 
 export {
   Home,
@@ -23,5 +28,9 @@ export {
   LoadingPage,
   Docs,
   FeatureSuggest,
-  ReportBug
+  ReportBug,
+  Dev,
+  DevLayout,
+  DevRequests,
+  DevBugRequests
 };

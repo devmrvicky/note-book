@@ -37,11 +37,11 @@ class DbService {
       throw new Error(error.message);
     }
   }
-  async getAllDocs() {
+  async getAllDocs(collectionId = evn.appwriteCollectionId) {
     try {
       return await this.databases.listDocuments(
         env.appwriteDatabaseId,
-        env.appwriteCollectionId
+        collectionId
       );
     } catch (error) {
       console.log(error.message);

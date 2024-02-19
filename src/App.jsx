@@ -20,6 +20,7 @@ import { changeInitializingText } from "./features/pageSlice";
 import env from "./env/env";
 import { changeCurrentDir, getAllFolders } from "./features/folderSlice";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -100,6 +101,7 @@ function App() {
         </>
       )}
       <SpeedInsights />
+      <Toaster />
     </ThemeProvider>
   );
 }

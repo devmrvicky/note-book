@@ -9,6 +9,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import {
+  Dev,
+  DevBugRequests,
+  DevLayout,
+  DevRequests,
   Docs,
   ErrorPage,
   FeatureSuggest,
@@ -110,6 +114,35 @@ const router = createBrowserRouter(
           </AuthLayout>
         }
       />
+      <Route
+        path="/dev"
+        element={
+          <AuthLayout authentication={true}>
+            <DevLayout>
+              <Dev />
+            </DevLayout>
+          </AuthLayout>
+        }
+      >
+        <Route
+          path="/dev/requests"
+          element={
+            <AuthLayout authentication={true}>
+              <DevRequests />
+            </AuthLayout>
+          }
+        >
+          <Route
+          path="/dev/requests/bug-fix-request"
+          element={
+            <AuthLayout authentication={true}>
+              <DevBugRequests />
+            </AuthLayout>
+          }
+        />
+        </Route>
+      </Route>
+
       <Route
         path="user/signup"
         element={
