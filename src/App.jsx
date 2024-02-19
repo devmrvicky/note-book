@@ -18,10 +18,8 @@ import dbService from "./appwrite/databaseService";
 import { getAllNotes } from "./features/noteSlice";
 import { changeInitializingText } from "./features/pageSlice";
 import env from "./env/env";
-import {
-  changeCurrentDir,
-  getAllFolders,
-} from "./features/folderSlice";
+import { changeCurrentDir, getAllFolders } from "./features/folderSlice";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -101,6 +99,7 @@ function App() {
           <Footer />
         </>
       )}
+      <SpeedInsights />
     </ThemeProvider>
   );
 }
