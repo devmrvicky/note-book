@@ -1,17 +1,31 @@
 import dbService from "@/appwrite/databaseService";
 import env from "@/env/env";
+import { getAllRequestsData } from "@/features/requestSlice";
 import React, { useEffect, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
 
 const DevBugRequests = () => {
   const [loading, setLoading] = useState(false);
   const [bugs, setBugs] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const { bugs: allBugs } = useSelector((store) => store.requests);
+
+  useEffect(() => {
+    setBugs(allBugs);
+  }, [allBugs.length]);
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const allBugs = await dbService.getAllDocs(env.appwriteBugCollectionId);
-        setBugs(allBugs.documents);
+        const { documents } = await dbService.getAllDocs(
+          env.appwriteBugCollectionId
+        );
+        setBugs(documents);
+        dispatch(getAllRequestsData(documents));
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -21,7 +35,7 @@ const DevBugRequests = () => {
   }, []);
 
   return (
-    <div className="p-3">
+    <div className="p-3 overflow-auto h-full pb-[100px]">
       <h2>All bugs</h2>
       {loading ? (
         <VscLoading className="w-10 h-10 animate-spin" />

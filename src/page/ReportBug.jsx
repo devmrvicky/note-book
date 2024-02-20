@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import dbService from "@/appwrite/databaseService";
 import env from "@/env/env";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BugObj from "@/obj-classes/bugObj";
+import realtimeService from "@/appwrite/realtimeService";
 
 // Get browser name
 const getBrowserName = () => {
@@ -63,6 +64,7 @@ const ReportBug = () => {
       const bugData = new BugObj(data, userData.$id, userData.name);
       // console.log(bugData);
       await dbService.createDocument(bugData, env.appwriteBugCollectionId);
+      
       toast({
         title: "Your bug submitted successfully!",
         description: data.title,
@@ -73,6 +75,10 @@ const ReportBug = () => {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   realtimeService.subscribeDocCreated();
+  // }, [])
 
   return (
     <div className="p-6">

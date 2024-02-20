@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const DevRequests = () => {
   return (
-    <div className="p-5 pl-[120px]">
+    <div className="p-5 pl-[120px] h-full">
       <div className="request-nav border-b w-full">
         <NavLink
           to="/dev/requests/bug-fix-request"

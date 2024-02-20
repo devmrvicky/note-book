@@ -21,11 +21,20 @@ import env from "./env/env";
 import { changeCurrentDir, getAllFolders } from "./features/folderSlice";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Toaster } from "@/components/ui/toaster";
+import realtimeService from "./appwrite/realtimeService";
+import { addRequestData } from "./features/requestSlice";
 
 function App() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { status } = useSelector((store) => store.auth);
+
+  const subscribe = () => {
+    realtimeService.subscribeDocCreated(({ payload }) => {
+      // console.log("subscribe");
+      dispatch(addRequestData(payload));
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -37,6 +46,7 @@ function App() {
         // if user got then login otherwise logout
         if (user) {
           dispatch(login(user));
+          subscribe();
         } else {
           dispatch(logout());
           return;
@@ -64,6 +74,9 @@ function App() {
             )
           );
         }
+
+        // subscribe document created channel
+        // realtimeService.subscribeDocCreated()
       } catch (error) {
         console.log(error.message);
       } finally {

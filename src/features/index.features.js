@@ -21,6 +21,7 @@ import folderReducer, {
   getAllDocs,
   backOneDir,
 } from "./folderSlice";
+import requestsReducer, {getAllRequestsData, addRequestData} from './requestSlice'
 
 export {
   authReducer,
@@ -45,4 +46,7 @@ export {
   changeCurrentDirName,
   getAllDocs,
   backOneDir,
+  requestsReducer,
+  addRequestData,
+  getAllRequestsData
 };
