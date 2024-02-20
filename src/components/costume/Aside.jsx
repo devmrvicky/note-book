@@ -129,7 +129,7 @@ const Aside = () => {
             </NavLink>
           ))}
           {/* extra menu */}
-          <div className="extra-menus flex flex-col gap-1 before:content-['options'] before:text-xs max-[400px]:before:hidden min-[400px]:py-4 before:text-zinc-500">
+          <div className="extra-menus flex flex-col gap-1 before:content-['options'] before:text-xs max-[400px]:hidden before:text-zinc-500">
             {extraMenus.map(({ path, name, icon, fillIcon }) => (
               <NavLink
                 to={path}
@@ -164,3 +164,4 @@ const Aside = () => {
 };
 
 export default Aside;
+export { extraMenus };

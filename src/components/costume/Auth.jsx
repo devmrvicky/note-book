@@ -12,6 +12,9 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 import authService from "@/appwrite/authService";
 import { logout } from "@/features/authSlice";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { extraMenus } from "./Aside";
+import { ModeToggle } from "./theme/ModeToggle";
+import { NavLink } from "react-router-dom";
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
@@ -67,6 +70,34 @@ const Auth = () => {
         </FlexBox>
       </PopoverTrigger>
       <PopoverContent className="w-60">
+        {/* profile */}
+        {/* appearance */}
+        <ModeToggle />
+        <div className="extra-menus flex flex-col gap-1 before:content-['options'] before:text-xs before:text-zinc-500 my-2">
+          {extraMenus.map(({ path, name, icon, fillIcon }) => (
+            <NavLink
+              to={path}
+              key={name}
+              className={({ isActive }) =>
+                isActive
+                  ? `px-3 py-1 dark:text-[#aaaaaa] bg-[#1d1d1d] rounded-md text-[1rem] flex items-center gap-3 md:w-auto max-[400px]:h-12 max-[400px]:rounded-full w-full`
+                  : `px-3 py-1 dark:text-[#747373] dark:hover:text-[#aaaaaa] hover:bg-[#1d1d1d] rounded-md text-[1rem] flex items-center gap-3 md:w-auto max-[400px]:h-12 max-[400px]:rounded-full w-full`
+              }
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <>
+                    {fillIcon} <span className="">{name}</span>
+                  </>
+                ) : (
+                  <>
+                    {icon} <span className="">{name}</span>
+                  </>
+                )
+              }
+            </NavLink>
+          ))}
+        </div>
         <Button
           variant="outline"
           onClick={handleLogout}

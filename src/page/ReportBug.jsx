@@ -64,7 +64,7 @@ const ReportBug = () => {
       const bugData = new BugObj(data, userData.$id, userData.name);
       // console.log(bugData);
       await dbService.createDocument(bugData, env.appwriteBugCollectionId);
-      
+
       toast({
         title: "Your bug submitted successfully!",
         description: data.title,
@@ -75,10 +75,6 @@ const ReportBug = () => {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   realtimeService.subscribeDocCreated();
-  // }, [])
 
   return (
     <div className="p-6">
