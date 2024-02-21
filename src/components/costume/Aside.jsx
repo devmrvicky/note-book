@@ -20,6 +20,7 @@ import { FaRegLightbulb } from "react-icons/fa6";
 import { FaLightbulb } from "react-icons/fa";
 import { PiDevices } from "react-icons/pi";
 import { PiDevicesFill } from "react-icons/pi";
+import CostumeNavLink from "./CostumeNavLink";
 
 const menus = [
   {
@@ -41,8 +42,8 @@ const menus = [
     fillIcon: <PiPencilFill className="w-5 h-5" />,
   },
   {
-    name: "Todos",
-    path: "/todos",
+    name: "Tasks",
+    path: "/tasks",
     icon: <RiTodoLine className="w-5 h-5" />,
     fillIcon: <RiTodoFill className="w-5 h-5" />,
   },
@@ -101,58 +102,28 @@ const Aside = () => {
           className="min-[400px]:flex-1 overflow-auto before:content-['Menus'] before:text-xs max-[400px]:before:hidden min-[400px]:py-4 before:text-zinc-500 flex-nowrap"
         >
           {/* main menus */}
-          {menus.map(({ path, name, icon, fillIcon, className }) => (
-            <NavLink
-              to={path}
-              key={name}
-              className={({ isActive }) =>
-                isActive
-                  ? `px-3 py-2 dark:text-black bg-zinc-200 text-lg rounded-md flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center ${
-                      className && className
-                    }`
-                  : `px-3 py-2 hover:dark:text-black hover:bg-zinc-200 text-lg rounded-md flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center ${
-                      className && className
-                    }`
-              }
-            >
-              {({ isActive }) =>
-                isActive ? (
-                  <>
-                    {fillIcon} <span className="md:block hidden ">{name}</span>
-                  </>
-                ) : (
-                  <>
-                    {icon} <span className="md:block hidden ">{name}</span>
-                  </>
-                )
-              }
-            </NavLink>
+          {menus.map((menu) => (
+            <CostumeNavLink
+              key={menu.name}
+              {...menu}
+              className={`px-3 py-2 text-lg rounded-md flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center ${
+                menu.className && menu.className
+              }`}
+              activeClasses={`dark:text-black bg-zinc-200 `}
+              noneActiveClasses={`hover:dark:text-black hover:bg-zinc-200`}
+              iconClass="md:block hidden"
+            />
           ))}
           {/* extra menu */}
           <div className="extra-menus flex flex-col gap-1 before:content-['options'] before:text-xs max-[400px]:hidden before:text-zinc-500">
-            {extraMenus.map(({ path, name, icon, fillIcon }) => (
-              <NavLink
-                to={path}
-                key={name}
-                className={({ isActive }) =>
-                  isActive
-                    ? `px-3 py-2 dark:text-[#aaaaaa] bg-[#1d1d1d] rounded-md text-[.7rem] flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center`
-                    : `px-3 py-2 dark:text-[#747373] dark:hover:text-[#aaaaaa] hover:bg-[#1d1d1d] rounded-md text-[.7rem] flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center`
-                }
-              >
-                {({ isActive }) =>
-                  isActive ? (
-                    <>
-                      {fillIcon}{" "}
-                      <span className="md:block hidden ">{name}</span>
-                    </>
-                  ) : (
-                    <>
-                      {icon} <span className="md:block hidden ">{name}</span>
-                    </>
-                  )
-                }
-              </NavLink>
+            {extraMenus.map((menu) => (
+              <CostumeNavLink
+                key={menu.name}
+                {...menu}
+                className={`px-3 py-2 rounded-md text-[.7rem] flex items-center gap-3 md:w-auto w-12 max-[400px]:h-12 max-[400px]:rounded-full max-[400px]:justify-center`}
+                activeClasses={`dark:text-[#aaaaaa] bg-[#1d1d1d]`}
+                noneActiveClasses={`dark:text-[#747373] dark:hover:text-[#aaaaaa] hover:bg-[#1d1d1d]`}
+              />
             ))}
           </div>
         </FlexBox>

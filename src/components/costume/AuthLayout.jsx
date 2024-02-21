@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { VscLoading } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,9 @@ const AuthLayout = ({ children, authentication = true }) => {
     setLoading(false);
   }, [navigate, status, authentication]);
 
-  return loading ? <div>Loading ...</div> : <>{children}</>;
+  return loading ? <div className="w-full h-full flex items-center justify-center">
+    <VscLoading className="w-10 h-10 animate-spin"/>
+  </div> : <>{children}</>;
 };
 
 export default AuthLayout;

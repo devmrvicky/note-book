@@ -21,6 +21,7 @@ import {
   Note,
   ReportBug,
   SignupForm,
+  Tasks,
   TextEditor,
 } from "./page/index.page.js";
 import { Provider } from "react-redux";
@@ -90,6 +91,16 @@ const router = createBrowserRouter(
           </AuthLayout>
         }
       />
+      {/* tasks route */}
+      <Route
+        path="/tasks"
+        element={
+          <AuthLayout authentication={true}>
+            <Tasks />
+          </AuthLayout>
+        }
+      ></Route>
+      {/* docs */}
       <Route
         path="/docs"
         element={
@@ -133,13 +144,13 @@ const router = createBrowserRouter(
           }
         >
           <Route
-          path="/dev/requests/bug-fix-request"
-          element={
-            <AuthLayout authentication={true}>
-              <DevBugRequests />
-            </AuthLayout>
-          }
-        />
+            path="/dev/requests/bug-fix-request"
+            element={
+              <AuthLayout authentication={true}>
+                <DevBugRequests />
+              </AuthLayout>
+            }
+          />
         </Route>
       </Route>
 

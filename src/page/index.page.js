@@ -15,6 +15,7 @@ import DevLayout from "./dev/DevLayout"
 import Dev from "./dev/Dev"
 import DevRequests from "./dev/DevRequests"
 import DevBugRequests from "./dev/DevBugRequests";
+import Tasks from './tasks/Tasks'
 
 export {
   Home,
@@ -32,5 +33,6 @@ export {
   Dev,
   DevLayout,
   DevRequests,
-  DevBugRequests
+  DevBugRequests,
+  Tasks
 };
