@@ -78,7 +78,7 @@ const TextEditor = () => {
     setTimeoutId(
       setTimeout(() => {
         dispatch(
-          addNoteInDraft({ noteBody: noteContent, noteId: draftNoteUniqueId })
+          addNoteInDraft({ body: noteContent, id: draftNoteUniqueId, parentFolderId: currentDir.$id, parentFolderName: currentDir.folderName, createdAt: new Date() })
         );
         setSaving(false);
         toast({

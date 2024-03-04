@@ -1,18 +1,20 @@
 import { changeCurrentPage } from "@/features/pageSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NoteCards from "./NoteCards";
 import { changeCurrentDir, getAllDocs } from "@/features/folderSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Note = () => {
+  const [filterValue, setFilterValue] = useState();
   const dispatch = useDispatch();
-  const { notes } = useSelector((store) => store.notes);
-  const { folders, currentDirName } = useSelector(
-    (store) => store.folders
-  );
+  const { notes, notesInDraft } = useSelector((store) => store.notes);
+  const { folders, currentDirName } = useSelector((store) => store.folders);
 
-  useEffect(() => {
-    dispatch(changeCurrentPage("Note"));
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const showAllNotes = () => {
     const openFolder = folders.find(
       (folder) => folder.folderName === currentDirName
     );
@@ -29,11 +31,27 @@ const Note = () => {
       }
     }
     dispatch(getAllDocs(allDocs));
-  }, [
-    notes.length,
-    folders.length,
-    currentDirName,
-  ]);
+  };
+
+  useEffect(() => {
+    dispatch(changeCurrentPage("Note"));
+    // select note on the basis of selected by user (all notes or draft note)
+    const notesFilter = new URLSearchParams(location.search);
+    const filter = notesFilter.get("filter");
+    setFilterValue(filter);
+    showAllNotes();
+    if (!filter) {
+      console.log("called");
+      showAllNotes();
+    }
+    if (filter === "draft") {
+      dispatch(getAllDocs(notesInDraft));
+    } else if (filter === "all") {
+      showAllNotes();
+    } else {
+      showAllNotes();
+    }
+  }, [notes.length, folders.length, currentDirName, location.search]);
 
   return (
     <div className="pb-14 px-5 py-5 flex flex-col gap-2 max-[588px]:max-w-[300px] max-[588px]:mx-auto">
@@ -44,7 +62,7 @@ const Note = () => {
           please click on pen button
         </div>
       )}
-      <NoteCards />
+      <NoteCards filterValue={filterValue} />
     </div>
   );
 };
