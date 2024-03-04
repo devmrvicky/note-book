@@ -5,14 +5,14 @@ import { updateCurrentDir, updateFolders } from "@/features/folderSlice";
 import { addNote } from "@/features/noteSlice";
 import getCollectionId from "./getCollectionId";
 
-class SavedObj {
+class SuccessRes {
   constructor(status, message = "file saved successfully") {
     this.status = status;
     this.message = message;
   }
 }
 
-class FailedObj {
+class FailedRes {
   constructor(status, message = "file won't saved successfully") {
     this.status = status;
     this.message = message;
@@ -38,18 +38,20 @@ const useSave = async (name, data, currentDir, dispatch) => {
       dispatch(updateCurrentDir(updatedCurrentDir));
       if (name === "note") {
         dispatch(addNote(createdDataOnDB));
+        return new SuccessRes(true, "note created successfully");
       } else if (name === "folder") {
         dispatch(updateFolders(createdDataOnDB));
+        return new SuccessRes(true, "folder created successfully");
       }
-      return new SavedObj(true);
     } else {
       console.log("collection id did not found for " + name);
-      return new FailedObj(false, `collection id did not found for ${name}`);
+      return new Error(`collection id did not found for ${name}`);
     }
   } catch (error) {
-    console.log(`error of useSave : ${error.message}`);
-    throw new FailedObj(false, error.message);
+    console.log(`error while saving : ${error.message}`);
+    throw new Error(error.message);
   }
 };
 
 export default useSave;
+export { SuccessRes, FailedRes };

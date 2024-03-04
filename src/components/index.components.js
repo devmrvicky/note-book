@@ -15,7 +15,8 @@ import Iframe from "./costume/Iframe";
 import Folder from "./costume/Folder";
 import { ThemeProvider } from "./costume/theme/ThemeProvider";
 import FolderNav from "./costume/FolderNav";
-import SubmitBtn from './costume/buttons/SubmitBtn'
+import SubmitBtn from "./costume/buttons/SubmitBtn";
+import CostumeTooltip from "./costume/CostumeTooltip";
 
 export {
   Logo,
@@ -33,6 +34,8 @@ export {
   InitElem,
   Iframe,
   Folder,
-  ThemeProvider,FolderNav,
-  SubmitBtn
+  ThemeProvider,
+  FolderNav,
+  SubmitBtn,
+  CostumeTooltip,
 };

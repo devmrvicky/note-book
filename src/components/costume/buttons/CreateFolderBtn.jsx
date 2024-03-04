@@ -13,6 +13,7 @@ import CreateFolderStructure from "@/obj-classes/createFolderStructure";
 import { DialogFooter } from "@/components/ui/dialog";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useSave from "@/methods/useSave";
+import { useToast } from "@/components/ui/use-toast";
 
 const CreateFolderBtn = () => {
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,8 @@ const CreateFolderBtn = () => {
   const navigate = useNavigate();
   const { userData } = useSelector((store) => store.auth);
   const { currentDir, folders } = useSelector((store) => store.folders);
+
+  const { toast } = useToast();
 
   const form = useForm({
     defaultValues: {
@@ -41,10 +44,17 @@ const CreateFolderBtn = () => {
       const savedObj = await useSave("folder", folderObj, currentDir, dispatch);
       if (savedObj.status) {
         console.log(savedObj.message);
+        toast({
+          description: savedObj.message,
+        });
         navigate("/notes");
       }
     } catch (error) {
       console.log(`an error occur from folder save method : ${error.message}`);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     } finally {
       setLoading(false);
     }

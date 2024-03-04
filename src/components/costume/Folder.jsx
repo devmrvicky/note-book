@@ -16,12 +16,14 @@ import useFileDelete from "@/methods/useFileDelete";
 import { useState } from "react";
 import { RiLoader5Line } from "react-icons/ri";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useToast } from "../ui/use-toast";
 
 const Folder = ({ folderName, $id }) => {
   const [deleting, setDeleting] = useState(false);
   const { folders, currentDir } = useSelector((store) => store.folders);
 
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
   const handleOpenFolder = (e) => {
     const folder = folders.find((folder) => folder.$id === $id);
@@ -36,9 +38,16 @@ const Folder = ({ folderName, $id }) => {
   const handleDeleteFolder = async () => {
     try {
       setDeleting(true);
-      await useFileDelete("folder", $id, currentDir, dispatch);
+      const res = await useFileDelete("folder", $id, currentDir, dispatch);
+      toast({
+        description: res.message,
+      });
     } catch (error) {
       console.log(error.message);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     } finally {
       setDeleting(false);
     }
@@ -73,7 +82,9 @@ const Folder = ({ folderName, $id }) => {
           <span>Edit</span>
         </ContextMenuItem>
         <ContextMenuItem
-          className="flex items-center gap-2 text-red-500"
+          className={`flex items-center gap-2 text-red-500 ${
+            deleting ? "bg-black/50" : ""
+          }`}
           onClick={handleDeleteFolder}
           disabled={deleting}
         >

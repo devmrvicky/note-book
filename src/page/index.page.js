@@ -11,11 +11,12 @@ import Docs from "./Docs";
 import FeatureSuggest from "./FeatureSuggest";
 import ReportBug from "./ReportBug";
 // developer page
-import DevLayout from "./dev/DevLayout"
-import Dev from "./dev/Dev"
-import DevRequests from "./dev/DevRequests"
+import DevLayout from "./dev/DevLayout";
+import Dev from "./dev/Dev";
+import DevRequests from "./dev/DevRequests";
 import DevBugRequests from "./dev/DevBugRequests";
-import Tasks from './tasks/Tasks'
+import Tasks from "./tasks/Tasks";
+import PageNotFound from "./PageNotFound";
 
 export {
   Home,
@@ -34,5 +35,6 @@ export {
   DevLayout,
   DevRequests,
   DevBugRequests,
-  Tasks
+  Tasks,
+  PageNotFound,
 };

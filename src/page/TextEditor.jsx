@@ -8,6 +8,7 @@ import env from "@/env/env";
 import { useDispatch, useSelector } from "react-redux";
 import Note from "@/obj-classes/createNote";
 import {
+  addNoteInDraft,
   setCurrentNote,
   setCurrentNoteTitle,
   updateNote,
@@ -18,10 +19,17 @@ import dbService from "@/appwrite/databaseService";
 import removeDollarSign from "@/methods/removeDollarSign";
 import useSave from "@/methods/useSave";
 import useUpdateData from "@/methods/useUpdateData";
+import { nanoid } from "@reduxjs/toolkit";
+import { useToast } from "@/components/ui/use-toast";
 
 const TextEditor = () => {
   const [loading, setLoading] = useState(false);
   const [body, setBody] = useState("");
+  const [noteContent, setNoteContent] = useState("");
+  const [timeoutId, setTimeoutId] = useState(null);
+  const [draftNoteUniqueId, setDraftNoteUniqueId] = useState(new Date());
+  const [saving, setSaving] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const editorRef = useRef(null);
@@ -31,6 +39,7 @@ const TextEditor = () => {
   const { currentDir } = useSelector((store) => store.folders);
 
   const { title } = useParams();
+  const { toast } = useToast();
 
   const handleSaveNote = async () => {
     try {
@@ -40,6 +49,7 @@ const TextEditor = () => {
         const noteObj = new Note(currentNoteTitle, noteContent, name, $id);
         dispatch(setCurrentNote({ ...noteObj }));
         // if note has title then perform save note function here. Not need to pass control in dialog box to set title
+        console.log(noteObj);
         if (currentNoteTitle) {
           const note = notes.find((note) => note.title === currentNoteTitle);
           if (note) {
@@ -59,6 +69,24 @@ const TextEditor = () => {
       setLoading(false);
     }
   };
+  // handle key down
+  const handleKeydown = (e) => {
+    // if (!timeoutId) return;
+    clearTimeout(timeoutId);
+    const noteContent = editorRef.current.getContent();
+    setSaving(true);
+    setTimeoutId(
+      setTimeout(() => {
+        dispatch(
+          addNoteInDraft({ noteBody: noteContent, noteId: draftNoteUniqueId })
+        );
+        setSaving(false);
+        toast({
+          description: "note saved in draft",
+        });
+      }, 1000)
+    );
+  };
   // toggle function
   const handleToggle = () => {
     dispatch(toggle({ editorAside: !toggleObj.editorAside }));
@@ -72,6 +100,11 @@ const TextEditor = () => {
     }
   }, [title]);
 
+  useEffect(() => {
+    // const id = ID.unique();
+    setDraftNoteUniqueId(nanoid());
+  }, []);
+
   return (
     <div className="border w-full h-full bg-[#EEEEEE] fixed top-0 left-0 z-40">
       {/* <Nav openEditor={true} /> */}
@@ -81,9 +114,10 @@ const TextEditor = () => {
           <Editor
             apiKey={env.textEditorApi}
             onInit={(evt, editor) => (editorRef.current = editor)}
-            onChange={(e) => {
-              console.log(e);
-            }}
+            // onChange={(e) => {
+            //   console.log(e);
+            // }}
+            onKeyUp={handleKeydown}
             initialValue={body}
             init={{
               height: 580,
@@ -132,6 +166,12 @@ const TextEditor = () => {
           >
             <IoCloseSharp />
           </Button>
+          {/* saving in draft indicator */}
+          {saving && (
+            <span className="absolute top-4 right-14 text-sm text-zinc-500 z-10 p-0">
+              saving in draft...
+            </span>
+          )}
         </div>
       </div>
     </div>

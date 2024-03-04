@@ -79,6 +79,7 @@ const initialState = {
   notes: [],
   currentNote: {},
   currentNoteTitle: null,
+  notesInDraft: [],
 };
 
 const noteSlice = createSlice({
@@ -86,10 +87,24 @@ const noteSlice = createSlice({
   initialState,
   reducers: {
     getAllNotes: (state, action) => {
-      state.notes = action.payload
+      state.notes = action.payload;
     },
     addNote: (state, action) => {
       state.notes.push(action.payload);
+    },
+    addNoteInDraft: (state, action) => {
+      const isNoteAvailable = state.notesInDraft.find(
+        (note) => note.noteId === action.payload.noteId
+      );
+      if (isNoteAvailable) {
+        state.notesInDraft = state.notesInDraft.map((note) =>
+          note.noteId === action.payload.noteId
+            ? { ...note, ...action.payload }
+            : note
+        );
+      } else {
+        state.notesInDraft.push(action.payload);
+      }
     },
     updateNote: (state, action) => {
       state.notes = state.notes.map((note) =>
@@ -99,7 +114,7 @@ const noteSlice = createSlice({
       );
     },
     deleteNote: (state, action) => {
-      state.notes = state.notes.filter(note => note.$id !== action.payload)
+      state.notes = state.notes.filter((note) => note.$id !== action.payload);
     },
     setCurrentNote: (state, action) => {
       state.currentNote = action.payload;
@@ -110,6 +125,13 @@ const noteSlice = createSlice({
   },
 });
 
-export const { getAllNotes, addNote, setCurrentNote, setCurrentNoteTitle, updateNote, deleteNote } =
-  noteSlice.actions;
+export const {
+  getAllNotes,
+  addNote,
+  setCurrentNote,
+  setCurrentNoteTitle,
+  updateNote,
+  deleteNote,
+  addNoteInDraft,
+} = noteSlice.actions;
 export default noteSlice.reducer;

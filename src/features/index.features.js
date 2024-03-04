@@ -9,7 +9,7 @@ import noteReducer, {
   addNote,
   updateNote,
   setCurrentNote,
-  setCurrentNoteTitle,
+  setCurrentNoteTitle,addNoteInDraft
 } from "./noteSlice";
 import folderReducer, {
   getAllFolders,
@@ -48,5 +48,5 @@ export {
   backOneDir,
   requestsReducer,
   addRequestData,
-  getAllRequestsData
+  getAllRequestsData, addNoteInDraft
 };

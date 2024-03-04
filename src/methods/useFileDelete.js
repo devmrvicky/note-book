@@ -4,6 +4,7 @@ import removeDollarSign from "./removeDollarSign";
 import { changeCurrentDir, deleteFolder } from "@/features/folderSlice";
 import { deleteNote } from "@/features/noteSlice";
 import env from "@/env/env";
+import { SuccessRes } from "./useSave";
 
 const useFileDelete = async (name, fileId, currentDir, dispatch) => {
   try {
@@ -24,12 +25,14 @@ const useFileDelete = async (name, fileId, currentDir, dispatch) => {
         dispatch(deleteFolder(fileId));
       }
       console.log(`${name} deleted`);
+      return new SuccessRes(true, `${name} deleted`);
     } else {
       console.log("collection id did not found for " + name);
-      // return new FailedObj(false, `collection id did not found for ${name}`);
+      throw new Error("collection id did not found for " + name);
     }
   } catch (error) {
-    console.lgo(error.message);
+    console.log(error.message);
+    throw new Error(error.message);
   }
 };
 
