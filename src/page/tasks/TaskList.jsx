@@ -11,7 +11,7 @@ const TaskList = ({
   isImportant,
   isCompleted,
   categories,
-  dueData,
+  dueDate,
 }) => {
   return (
     <div className="border px-3 py-2 flex items-center gap-4">
@@ -32,7 +32,7 @@ const TaskList = ({
               </span>
             ))}
           </p>
-          <p>{dueData}</p>
+          <p>{dueDate}</p>
         </div>
       </div>
       <button className="ml-auto">

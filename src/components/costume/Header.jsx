@@ -38,7 +38,7 @@ const Header = () => {
     const filter = notesFilter.get("filter");
     setSelectedFilterNoteValue(filter)
     setHidden(
-      currentPage === "Bugs report" || currentPage === "Feature suggestion"
+      currentPage === "Bugs report" || currentPage === "Feature suggestion" || currentPage === "Tasks"
         ? true
         : false
     );

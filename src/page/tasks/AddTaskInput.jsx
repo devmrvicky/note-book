@@ -3,27 +3,34 @@ import { Input } from "@/components/ui/input";
 import { CircleIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useForm } from "react-hook-form";
+import useAddTask from "./hooks/useAddTask";
 
 const AddTaskInput = () => {
-  const { handleSubmit } = useForm({
+  const { handleSubmit, register } = useForm({
     defaultValues: {
       task: "default task",
     },
   });
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const { handleAddingTask } = useAddTask();
 
   return (
     <div className="fixed left-0 bottom-0 bg-transparent w-full py-2">
       <form
         action=""
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full bg-black border max-w-[1000px]"
+        onSubmit={handleSubmit(handleAddingTask)}
+        className="w-full h-full bg-transparent pl-[250px]"
       >
-        <CircleIcon className="w-5 h-5" />
-        <div className="form-control">
-          <Input type="text" name="task" placeholder="add your task" />
+        <div className="w-full max-w-[900px] mx-auto flex border bg-black px-3 py-2 items-center gap-3">
+          <CircleIcon className="w-6 h-6" />
+          <div className="form-control w-full flex-1">
+            <input
+              type="text"
+              name="task"
+              placeholder="add your task"
+              className="w-full bg-transparent border-none outline-0 px-2 py-1 text-xl"
+              {...register("task")}
+            />
+          </div>
         </div>
       </form>
     </div>

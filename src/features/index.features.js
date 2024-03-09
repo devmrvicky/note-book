@@ -9,7 +9,8 @@ import noteReducer, {
   addNote,
   updateNote,
   setCurrentNote,
-  setCurrentNoteTitle,addNoteInDraft
+  setCurrentNoteTitle,
+  addNoteInDraft,
 } from "./noteSlice";
 import folderReducer, {
   getAllFolders,
@@ -21,7 +22,17 @@ import folderReducer, {
   getAllDocs,
   backOneDir,
 } from "./folderSlice";
-import requestsReducer, {getAllRequestsData, addRequestData} from './requestSlice'
+import requestsReducer, {
+  getAllRequestsData,
+  addRequestData,
+} from "./requestSlice";
+import tasksReducer, {
+  getAllTasks,
+  addTaskPending,
+  addTaskSuccess,
+  addTaskFailed,
+  addTaskReset,
+} from "./tasksSlice";
 
 export {
   authReducer,
@@ -48,5 +59,12 @@ export {
   backOneDir,
   requestsReducer,
   addRequestData,
-  getAllRequestsData, addNoteInDraft
+  getAllRequestsData,
+  addNoteInDraft,
+  getAllTasks,
+  addTaskPending,
+  addTaskSuccess,
+  addTaskFailed,
+  addTaskReset,
+  tasksReducer,
 };

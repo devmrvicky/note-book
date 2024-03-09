@@ -5,6 +5,7 @@ import {
   noteReducer,
   folderReducer,
   requestsReducer,
+  tasksReducer,
 } from "@/features/index.features";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -16,6 +17,7 @@ const rootReducers = combineReducers({
   notes: noteReducer,
   folders: folderReducer,
   requests: requestsReducer,
+  tasks: tasksReducer,
 });
 
 const persistedReducer = persistReducer(
