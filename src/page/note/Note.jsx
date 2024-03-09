@@ -2,17 +2,22 @@ import { changeCurrentPage } from "@/features/pageSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NoteCards from "./NoteCards";
-import { changeCurrentDir, getAllDocs } from "@/features/folderSlice";
-import { useLocation, } from "react-router-dom";
-import IndividualNote from './IndividualNote'
+import {
+  addDirToDirBreadcrumb,
+  changeCurrentDir,
+  changeCurrentDirName,
+  getAllDocs,
+} from "@/features/folderSlice";
+import { useLocation } from "react-router-dom";
+import IndividualNote from "./IndividualNote";
 
 const Note = () => {
-  const [noteTitle, setNoteTitle] = useState(null)
+  const [noteTitle, setNoteTitle] = useState(null);
   const [filterValue, setFilterValue] = useState();
-  const dispatch = useDispatch();
   const { notes, notesInDraft } = useSelector((store) => store.notes);
   const { folders, currentDirName } = useSelector((store) => store.folders);
 
+  const dispatch = useDispatch();
   const location = useLocation();
 
   const showAllNotes = () => {
@@ -22,7 +27,7 @@ const Note = () => {
     dispatch(changeCurrentDir(openFolder));
     console.log("it will run when length of notes and folders will change ");
     const allDocs = [];
-    if (openFolder.ids) {
+    if (openFolder && openFolder.ids) {
       for (let id of openFolder.ids) {
         for (let doc of [...notes, ...folders]) {
           if (doc.$id === id) {
@@ -54,9 +59,15 @@ const Note = () => {
   }, [notes.length, folders.length, currentDirName, location.search]);
 
   useEffect(() => {
-    const noteQuery = new URLSearchParams(location.search);
-    const noteTitle = noteQuery.get("note");
-    setNoteTitle(noteTitle)
+    const searchQuery = new URLSearchParams(location.search);
+    const noteTitle = searchQuery.get("note");
+    setNoteTitle(noteTitle);
+    let folderName = searchQuery.get("folder");
+    if (!location.search && !folderName) {
+      folderName = "rootDir";
+    }
+    dispatch(changeCurrentDirName(folderName));
+    dispatch(addDirToDirBreadcrumb(folderName));
   }, [location.search]);
 
   return (
@@ -70,7 +81,7 @@ const Note = () => {
       )}
       <NoteCards filterValue={filterValue} />
       {/* show individual note */}
-      {noteTitle && <IndividualNote title={noteTitle} /> }
+      {noteTitle && <IndividualNote title={noteTitle} />}
     </div>
   );
 };

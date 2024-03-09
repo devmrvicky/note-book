@@ -5,14 +5,18 @@ import {
   changeCurrentDirName,
   removeDirFromDirBreadcrumb,
 } from "@/features/folderSlice";
+import { useNavigate } from "react-router-dom";
 
 const FolderNav = () => {
-  const dispatch = useDispatch();
   const { dirBreadcrumb } = useSelector((store) => store.folders);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleDirNav = (folder) => {
     dispatch(removeDirFromDirBreadcrumb(folder));
     dispatch(changeCurrentDirName(folder));
+    navigate(`/notes?folder=${folder}`);
   };
 
   return (

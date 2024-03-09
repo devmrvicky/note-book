@@ -17,22 +17,25 @@ import { useState } from "react";
 import { RiLoader5Line } from "react-icons/ri";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "../ui/use-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Folder = ({ folderName, $id }) => {
   const [deleting, setDeleting] = useState(false);
   const { folders, currentDir } = useSelector((store) => store.folders);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { toast } = useToast();
 
   const handleOpenFolder = (e) => {
     const folder = folders.find((folder) => folder.$id === $id);
+    navigate(`/notes?folder=${folder.folderName}`);
     if (!folder) {
       console.log(`folder doesn't find`);
       return;
     }
-    dispatch(changeCurrentDirName(folderName));
-    dispatch(addDirToDirBreadcrumb(folderName));
+    // dispatch(changeCurrentDirName(folderName));
+    // dispatch(addDirToDirBreadcrumb(folderName));
   };
 
   const handleDeleteFolder = async () => {

@@ -35,13 +35,25 @@ const foldersSlice = createSlice({
       );
     },
     changeCurrentDirName: (state, action) => {
-      state.currentDirName = action.payload;
+      state.currentDirName = action.payload ? action.payload : "rootDir";
+      if (!action.payload) {
+        state.dirBreadcrumb = ["rootDir"];
+      }
     },
     getAllDocs: (state, action) => {
       state.allDocs = action.payload;
     },
     addDirToDirBreadcrumb: (state, action) => {
-      state.dirBreadcrumb.push(action.payload);
+      if (action.payload === "rootDir") {
+        state.dirBreadcrumb = ["rootDir"];
+        return;
+      }
+      const index = state.dirBreadcrumb.indexOf(action.payload);
+      if (index !== -1) {
+        state.dirBreadcrumb = state.dirBreadcrumb.slice(0, index + 1);
+      } else {
+        state.dirBreadcrumb.push(action.payload);
+      }
     },
     backOneDir: (state) => {
       state.dirBreadcrumb.pop();
