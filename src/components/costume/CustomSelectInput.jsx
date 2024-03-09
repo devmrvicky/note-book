@@ -14,7 +14,6 @@ export const CustomSelectInput = ({
   onChange,
   selectedValue,
 }) => {
-  console.log(selectedValue);
   return (
     <Select onValueChange={onChange} defaultValue={selectedValue}>
       <SelectTrigger className="w-[180px]">

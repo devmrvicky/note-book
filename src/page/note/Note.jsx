@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NoteCards from "./NoteCards";
 import { changeCurrentDir, getAllDocs } from "@/features/folderSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
+import IndividualNote from './IndividualNote'
 
 const Note = () => {
+  const [noteTitle, setNoteTitle] = useState(null)
   const [filterValue, setFilterValue] = useState();
   const dispatch = useDispatch();
   const { notes, notesInDraft } = useSelector((store) => store.notes);
   const { folders, currentDirName } = useSelector((store) => store.folders);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   const showAllNotes = () => {
     const openFolder = folders.find(
@@ -41,7 +42,6 @@ const Note = () => {
     setFilterValue(filter);
     showAllNotes();
     if (!filter) {
-      console.log("called");
       showAllNotes();
     }
     if (filter === "draft") {
@@ -53,6 +53,12 @@ const Note = () => {
     }
   }, [notes.length, folders.length, currentDirName, location.search]);
 
+  useEffect(() => {
+    const noteQuery = new URLSearchParams(location.search);
+    const noteTitle = noteQuery.get("note");
+    setNoteTitle(noteTitle)
+  }, [location.search]);
+
   return (
     <div className="pb-14 px-5 py-5 flex flex-col gap-2 max-[588px]:max-w-[300px] max-[588px]:mx-auto">
       {/* <h1>Notes</h1> */}
@@ -63,6 +69,8 @@ const Note = () => {
         </div>
       )}
       <NoteCards filterValue={filterValue} />
+      {/* show individual note */}
+      {noteTitle && <IndividualNote title={noteTitle} /> }
     </div>
   );
 };

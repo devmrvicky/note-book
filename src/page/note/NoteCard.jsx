@@ -27,7 +27,8 @@ const NoteCard = ({ $id, title, body, color, $updatedAt }) => {
   const navigate = useNavigate();
   const handleOpenNote = (title) => {
     if (deleting) return;
-    navigate(`/notes/${title}`);
+    // navigate(`/notes/${title}`);
+    navigate(`/notes?note=${title}`);
   };
 
   const handleDeleteNote = async () => {

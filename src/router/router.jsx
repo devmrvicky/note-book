@@ -49,8 +49,8 @@ const router = createBrowserRouter(
           </AuthLayout>
         }
       />
-      <Route
-        path="/notes/:title"
+      {/* <Route
+        path="/notes?note=:title"
         element={
           <AuthLayout authentication={true}>
             <IndividualNotePageError>
@@ -58,7 +58,7 @@ const router = createBrowserRouter(
             </IndividualNotePageError>
           </AuthLayout>
         }
-      />
+      /> */}
       <Route
         path="/text-editor"
         element={

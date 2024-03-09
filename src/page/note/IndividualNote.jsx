@@ -6,19 +6,16 @@ import React, { useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Iframe } from "@/components/index.components";
 
-const IndividualNote = () => {
-  const [note, setNote] = useState({});
-  const { body, $updatedAt } = note;
+const IndividualNote = ({ title }) => {
+  const [note, setNote] = useState(null);
   const { notes } = useSelector((store) => store.notes);
   const { toggleObj } = useSelector((store) => store.page);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { title } = useParams();
 
   const handleToggle = () => {
     dispatch(
@@ -28,6 +25,7 @@ const IndividualNote = () => {
 
   useEffect(() => {
     setNote(notes.find((note) => note.title === title));
+    dispatch(toggle({ individualNotePageAside: false }));
   }, [notes.length, title]);
 
   return (
@@ -68,33 +66,41 @@ const IndividualNote = () => {
           </div>
         </aside>
         {/* note content */}
-        <div className="flex-1 w-full h-full bg-[#eee] flex flex-col">
-          <div className="note-head w-full border-b px-4 py-2 bg-white text-center">
-            <h1 className="text-lg">{note.title}</h1>
-            <div className="text-xs text-zinc-700">
-              <span>02/02/2024</span>.<span>09:00 am</span>
+        {note ? (
+          <div className="flex-1 w-full h-full bg-[#eee] flex flex-col">
+            <div className="note-head w-full border-b px-4 py-2 bg-white text-center">
+              <h1 className="text-lg">{note.title}</h1>
+              <div className="text-xs text-zinc-700">
+                <span>02/02/2024</span>.<span>09:00 am</span>
+              </div>
             </div>
+            <div className="w-full max-w-[700px] h-full flex-1 border mx-auto overflow-auto bg-white">
+              {note.body && (
+                <Iframe noteBody={note.body} $updatedAt={note.$updatedAt} />
+              )}
+              {/* <p className="text-xs py-3">{getDate($updatedAt).fullDate}</p> */}
+            </div>
+            <Button
+              variant="outline"
+              onClick={handleToggle}
+              className="absolute top-2 left-4 z-10 rounded-full w-8 h-8 p-0 flex md:hidden"
+            >
+              <CiMenuBurger />
+            </Button>
+            {/* text editor close button */}
+            <Button
+              variant="outline"
+              onClick={() => navigate("/notes")}
+              className="absolute top-2 right-2 z-10 rounded-full w-8 h-8 p-0"
+            >
+              <IoCloseSharp />
+            </Button>
           </div>
-          <div className="w-full max-w-[700px] h-full flex-1 border mx-auto overflow-auto bg-white">
-            {body && <Iframe noteBody={body} $updatedAt={$updatedAt} />}
-            {/* <p className="text-xs py-3">{getDate($updatedAt).fullDate}</p> */}
+        ) : (
+          <div className="flex-1 w-full h-full bg-[#eee] flex flex-col">
+            note not found
           </div>
-          <Button
-            variant="outline"
-            onClick={handleToggle}
-            className="absolute top-2 left-4 z-10 rounded-full w-8 h-8 p-0 flex md:hidden"
-          >
-            <CiMenuBurger />
-          </Button>
-          {/* text editor close button */}
-          <Button
-            variant="outline"
-            onClick={() => navigate("/notes")}
-            className="absolute top-2 right-2 z-10 rounded-full w-8 h-8 p-0"
-          >
-            <IoCloseSharp />
-          </Button>
-        </div>
+        )}
       </div>
     </div>
   );

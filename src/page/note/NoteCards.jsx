@@ -5,7 +5,6 @@ import parse from "html-react-parser";
 
 const NoteCards = ({ filterValue }) => {
   const { allDocs } = useSelector((store) => store.folders);
-  console.log(filterValue);
   return (
     <div className="notes overflow-auto pb-4">
       {allDocs.length
