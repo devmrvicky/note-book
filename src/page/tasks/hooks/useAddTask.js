@@ -6,10 +6,15 @@ import {
   addTaskFailed,
   addTaskSuccess,
 } from "@/features/tasksSlice";
-import { useDispatch } from "react-redux";
+import getDate from "@/methods/getdate";
+import { useDispatch, useSelector } from "react-redux";
 
 const useAddTask = () => {
+
+  const {activeTaskTab, taskDueDate} = useSelector(store => store.tasks)
+
   const { toast } = useToast();
+  const {fullDate} = getDate()
 
   const dispatch = useDispatch();
   const handleAddingTask = async (data) => {
@@ -17,10 +22,10 @@ const useAddTask = () => {
       dispatch(addTaskPending());
       const task = {
         taskName: data.task,
-        isImportant: true,
+        isImportant: activeTaskTab === 'important' ? true : false,
         isCompleted: false,
-        categories: ["my day", "important", "completed"],
-        dueDate: "2 jan 2025",
+        categories: ["tasks", activeTaskTab],
+        dueDate: taskDueDate ? taskDueDate : fullDate,
         taskSteps: [],
         taskNote: "",
       };
@@ -29,7 +34,7 @@ const useAddTask = () => {
         env.appwriteTaskCollectionId
       );
       if (res) {
-        dispatch(addTaskSuccess(task));
+        dispatch(addTaskSuccess(res));
         toast({
           description: "task created successfully",
         });

@@ -17,6 +17,7 @@ import { ThemeProvider } from "./costume/theme/ThemeProvider";
 import FolderNav from "./costume/FolderNav";
 import SubmitBtn from "./costume/buttons/SubmitBtn";
 import CostumeTooltip from "./costume/CostumeTooltip";
+import DatePicker from './costume/DatePicker'
 
 export {
   Logo,
@@ -37,5 +38,5 @@ export {
   ThemeProvider,
   FolderNav,
   SubmitBtn,
-  CostumeTooltip,
+  CostumeTooltip,DatePicker
 };

@@ -1,10 +1,12 @@
+import getDate from "@/methods/getdate";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   tasks: [],
   loading: false,
   error: null,
-  activeTaskTab: 'My day'
+  activeTaskTab: "my day",
+  taskDueDate: null,
 };
 
 const tasksSlice = createSlice({
@@ -12,7 +14,7 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {
     getAllTasks: (state, action) => {
-      state.tasks = action.payload
+      state.tasks = action.payload;
     },
     addTaskPending: (state, action) => {
       state.loading = true;
@@ -32,11 +34,41 @@ const tasksSlice = createSlice({
       state.error = null;
     },
     changeActiveTab: (state, action) => {
-      state.activeTaskTab = action.payload ? action.payload : 'My day'
-    }
+      state.activeTaskTab = action.payload ? action.payload : "my day";
+    },
+    setTaskDueDate: (state, action) => {
+      state.taskDueDate = action.payload ? action.payload : getDate().fullDate;
+    },
+    updateTask: (state, action) => {
+      const { taskId, updaterField } = action.payload;
+      console.log({ taskId, updaterField });
+      state.tasks = state.tasks.map((task) =>
+        task.$id === taskId
+          ? {
+              ...task,
+              isCompleted:
+                updaterField === "taskComplete"
+                  ? !task.isCompleted
+                  : task.isCompleted,
+              isImportant:
+                updaterField === "taskImportant"
+                  ? !task.isImportant
+                  : task.isImportant,
+            }
+          : task
+      );
+    },
   },
 });
 
-export const { getAllTasks, addTaskPending, addTaskSuccess, addTaskFailed, addTaskReset } =
-  tasksSlice.actions;
+export const {
+  getAllTasks,
+  addTaskPending,
+  addTaskSuccess,
+  addTaskFailed,
+  addTaskReset,
+  changeActiveTab,
+  setTaskDueDate,
+  updateTask,
+} = tasksSlice.actions;
 export default tasksSlice.reducer;

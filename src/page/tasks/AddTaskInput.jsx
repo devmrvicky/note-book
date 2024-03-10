@@ -4,11 +4,12 @@ import { CircleIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAddTask from "./hooks/useAddTask";
+import { DatePicker } from "@/components/index.components";
 
 const AddTaskInput = () => {
   const { handleSubmit, register } = useForm({
     defaultValues: {
-      task: "default task",
+      task: "",
     },
   });
   const { handleAddingTask } = useAddTask();
@@ -31,6 +32,7 @@ const AddTaskInput = () => {
               {...register("task")}
             />
           </div>
+          <DatePicker/>
         </div>
       </form>
     </div>

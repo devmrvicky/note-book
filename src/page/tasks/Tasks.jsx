@@ -10,7 +10,6 @@ const Tasks = () => {
 
   const { activeTab, tasks, myDayTask, importantTask, completedTask } =
     useTasks();
-  console.log(activeTab);
 
   return (
     <div className="relative">
@@ -48,7 +47,7 @@ const Tasks = () => {
           <div>you have not any task</div>
         )}
       </div>
-      <AddTaskInput />
+      {activeTab !== "completed" && <AddTaskInput />}
     </div>
   );
 };

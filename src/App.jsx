@@ -28,6 +28,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { status } = useSelector((store) => store.auth);
+  const { currentPage } = useSelector((store) => store.page);
 
   const subscribe = () => {
     realtimeService.subscribeDocCreated(({ payload }) => {
@@ -99,7 +100,7 @@ function App() {
             <div className="flex-1 h-screen relative ml-16 md:ml-60 max-[400px]:ml-0">
               <Header />
               <FolderNav />
-              <CreateNoteBtn />
+              {currentPage !== "Tasks" && <CreateNoteBtn />}
               <Outlet />
             </div>
           </FlexBox>

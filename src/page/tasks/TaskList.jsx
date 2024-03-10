@@ -5,17 +5,22 @@ import {
   StarIcon,
 } from "@radix-ui/react-icons";
 import React from "react";
+import useTaskAction from "./hooks/useTaskAction";
+import getDate from "@/methods/getdate";
 
 const TaskList = ({
+  $id,
   taskName,
   isImportant,
   isCompleted,
   categories,
   dueDate,
 }) => {
+  console.log($id);
+  const { handleCompletionTask } = useTaskAction();
   return (
     <div className="border px-3 py-2 flex items-center gap-4">
-      <button>
+      <button onClick={() => handleCompletionTask($id, "taskComplete")}>
         {isCompleted ? (
           <CheckCircledIcon className="w-5 h-5" />
         ) : (
@@ -32,10 +37,13 @@ const TaskList = ({
               </span>
             ))}
           </p>
-          <p>{dueDate}</p>
+          <p>{getDate(dueDate).fullDate}</p>
         </div>
       </div>
-      <button className="ml-auto">
+      <button
+        className="ml-auto"
+        onClick={() => handleCompletionTask($id, "taskImportant")}
+      >
         {isImportant ? (
           <StarFilledIcon className="w-5 h-5" />
         ) : (

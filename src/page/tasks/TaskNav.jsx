@@ -14,29 +14,31 @@ import { IoInfinite, IoInfiniteOutline } from "react-icons/io5";
 import { PiSunFill } from "react-icons/pi";
 import { TbDeviceIpadHorizontalPlus } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { GoHome, GoHomeFill} from "react-icons/go";
 
 const taskNavLists = [
   {
     name: "My day",
-    path: "/tasks/my-day",
     icon: <SunIcon className="w-5 h-5" />,
     fillIcon: <PiSunFill className="w-5 h-5" />,
   },
   {
+    name: "Tasks",
+    icon: <GoHome className="w-5 h-5" />,
+    fillIcon: <GoHomeFill className="w-5 h-5" />,
+  },
+  {
     name: "Important",
-    path: "/tasks/important-tasks",
     icon: <StarIcon className="w-5 h-5" />,
     fillIcon: <StarFilledIcon className="w-5 h-5" />,
   },
   {
     name: "All",
-    path: "/tasks/all-tasks",
     icon: <IoInfiniteOutline className="w-5 h-5" />,
     fillIcon: <IoInfinite className="w-5 h-5" />,
   },
   {
     name: "Completed",
-    path: "/tasks/completed-tasks",
     icon: <GoCheckCircle className="w-5 h-5" />,
     fillIcon: <GoCheckCircleFill className="w-5 h-5" />,
   },
