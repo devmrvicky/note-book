@@ -1,64 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  tasks: [
-    // {
-    //   taskName: "task name",
-    //   isImportant: true,
-    //   isCompleted: false,
-    //   categories: ["my day", "important", "completed"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-    // {
-    //   taskName: "task name",
-    //   isImportant: false,
-    //   isCompleted: true,
-    //   categories: ["my day", "important", "completed"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-    // {
-    //   taskName: "task name",
-    //   isImportant: false,
-    //   isCompleted: false,
-    //   categories: ["my day", "important", "completed"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-    // {
-    //   taskName: "task name",
-    //   isImportant: false,
-    //   isCompleted: false,
-    //   categories: ["my day"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-    // {
-    //   taskName: "task name",
-    //   isImportant: false,
-    //   isCompleted: false,
-    //   categories: ["important", "completed"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-    // {
-    //   taskName: "task name",
-    //   isImportant: true,
-    //   isCompleted: true,
-    //   categories: ["my day"],
-    //   dueData: "2 jan 2025",
-    //   taskStep: [],
-    //   taskNote: "",
-    // },
-  ],
+  tasks: [],
   loading: false,
   error: null,
+  activeTaskTab: 'My day'
 };
 
 const tasksSlice = createSlice({
@@ -85,6 +31,9 @@ const tasksSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    changeActiveTab: (state, action) => {
+      state.activeTaskTab = action.payload ? action.payload : 'My day'
+    }
   },
 });
 

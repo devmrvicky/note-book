@@ -20,7 +20,7 @@ const AddTaskInput = () => {
         onSubmit={handleSubmit(handleAddingTask)}
         className="w-full h-full bg-transparent pl-[250px]"
       >
-        <div className="w-full max-w-[900px] mx-auto flex border bg-black px-3 py-2 items-center gap-3">
+        <div className="w-full max-w-[900px] mx-auto flex border bg-black px-3 py-2 items-center gap-3 focus-within:border focus-within:border-white rounded">
           <CircleIcon className="w-6 h-6" />
           <div className="form-control w-full flex-1">
             <input

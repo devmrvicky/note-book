@@ -13,6 +13,7 @@ import { GoCheckCircle, GoCheckCircleFill } from "react-icons/go";
 import { IoInfinite, IoInfiniteOutline } from "react-icons/io5";
 import { PiSunFill } from "react-icons/pi";
 import { TbDeviceIpadHorizontalPlus } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const taskNavLists = [
   {
@@ -41,18 +42,54 @@ const taskNavLists = [
   },
 ];
 
-const TaskNav = () => {
+const TaskNav = ({
+  activeTab,
+  totalTasks,
+  myDayTasks,
+  importantTasks,
+  completedTasks,
+}) => {
+  const navigate = useNavigate();
   return (
     <nav className="border-b border-zinc-400 flex items-center">
-      {taskNavLists.map((menu) => (
-        <CostumeNavLink
-          key={menu.name}
-          {...menu}
-          className={`flex items-center gap-3 py-3 px-6 relative after:content-[""] after:w-full after:h-[1px] after:absolute after:bottom-[-1px] after:left-1/2 after:-translate-x-1/2 text-zinc-400`}
-          activeClasses="text-white after:bg-white"
-          noneActiveClasses="hover:text-white hover:after:bg-white"
-        />
-      ))}
+      <ul className="flex items-center">
+        {taskNavLists.map(({ name, icon, fillIcon }) => (
+          <li
+            key={name}
+            className={`flex items-center gap-3 py-3 px-6 relative after:content-[""] after:w-full after:h-[1px] after:absolute after:bottom-[-1px] after:left-1/2 after:-translate-x-1/2 cursor-pointer ${
+              activeTab === name.toLocaleLowerCase()
+                ? "text-white after:bg-white"
+                : "text-zinc-400 hover:text-white hover:after:bg-white"
+            }`}
+            onClick={() => navigate(`/tasks?tab=${name.toLocaleLowerCase()}`)}
+          >
+            <span>
+              {activeTab === name.toLocaleLowerCase() ? fillIcon : icon}
+            </span>
+            <span>{name}</span>
+            {name === "All" && totalTasks >= 1 && (
+              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
+                {totalTasks}
+              </span>
+            )}
+            {name === "My day" && myDayTasks >= 1 && (
+              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
+                {myDayTasks}
+              </span>
+            )}
+            {name === "Important" && importantTasks >= 1 && (
+              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
+                {importantTasks}
+              </span>
+            )}
+            {name === "Completed" && completedTasks >= 1 && (
+              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
+                {completedTasks}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
       {/* tasks btn */}
       <div className="nav-ctrl-btns ml-auto flex gap-3 pr-3">
         <Button variant="outline" className="flex items-center gap-3">
