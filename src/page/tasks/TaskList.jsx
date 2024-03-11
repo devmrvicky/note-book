@@ -16,7 +16,6 @@ const TaskList = ({
   categories,
   dueDate,
 }) => {
-  console.log($id);
   const { handleCompletionTask } = useTaskAction();
   return (
     <div className="border px-3 py-2 flex items-center gap-4">

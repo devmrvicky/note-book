@@ -14,7 +14,13 @@ import { IoInfinite, IoInfiniteOutline } from "react-icons/io5";
 import { PiSunFill } from "react-icons/pi";
 import { TbDeviceIpadHorizontalPlus } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import { GoHome, GoHomeFill} from "react-icons/go";
+import { GoHome, GoHomeFill } from "react-icons/go";
+import { createPortal } from "react-dom";
+import useTaskAction from "./hooks/useTaskAction";
+import CreateTaskListInput from "./CreateTaskListInput";
+import TaskTabs from "./TaskTabs";
+import { PiList } from "react-icons/pi";
+import TaskTabList from "./TaskTabList";
 
 const taskNavLists = [
   {
@@ -52,52 +58,45 @@ const TaskNav = ({
   completedTasks,
 }) => {
   const navigate = useNavigate();
+  const { showTabInput, showCreateTabInput, hideCreateTabInput, taskTabLists, createNewTaskList } =
+    useTaskAction();
   return (
     <nav className="border-b border-zinc-400 flex items-center">
-      <ul className="flex items-center">
-        {taskNavLists.map(({ name, icon, fillIcon }) => (
-          <li
-            key={name}
-            className={`flex items-center gap-3 py-3 px-6 relative after:content-[""] after:w-full after:h-[1px] after:absolute after:bottom-[-1px] after:left-1/2 after:-translate-x-1/2 cursor-pointer ${
-              activeTab === name.toLocaleLowerCase()
-                ? "text-white after:bg-white"
-                : "text-zinc-400 hover:text-white hover:after:bg-white"
-            }`}
-            onClick={() => navigate(`/tasks?tab=${name.toLocaleLowerCase()}`)}
-          >
-            <span>
-              {activeTab === name.toLocaleLowerCase() ? fillIcon : icon}
-            </span>
-            <span>{name}</span>
-            {name === "All" && totalTasks >= 1 && (
-              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
-                {totalTasks}
-              </span>
-            )}
-            {name === "My day" && myDayTasks >= 1 && (
-              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
-                {myDayTasks}
-              </span>
-            )}
-            {name === "Important" && importantTasks >= 1 && (
-              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
-                {importantTasks}
-              </span>
-            )}
-            {name === "Completed" && completedTasks >= 1 && (
-              <span className="w-5 h-5 rounded-full flex items-center justify-center text-sm ml-auto bg-zinc-600">
-                {completedTasks}
-              </span>
-            )}
-          </li>
+      <div
+        id="task-tabs"
+        className="flex items-center overflow-hidden max-w-[733px]"
+      >
+        {taskNavLists.map((tab) => (
+          <TaskTabs 
+            key={tab.name} 
+            {...tab} 
+            activeTab = {activeTab}
+            totalTasks = {totalTasks}
+            myDayTasks = {myDayTasks}
+            importantTasks = {importantTasks}
+            completedTasks = {completedTasks}
+          />
         ))}
-      </ul>
+        {/* task lists */}
+        {taskTabLists.map((list, index) => (
+          <TaskTabList key={index} list={list}/>
+        ))}
+      </div>
       {/* tasks btn */}
       <div className="nav-ctrl-btns ml-auto flex gap-3 pr-3">
-        <Button variant="outline" className="flex items-center gap-3">
+        <Button
+          variant="outline"
+          className="flex items-center gap-3"
+          onClick={showCreateTabInput}
+        >
           <PlusIcon className="w-5 h-5" />
           <span>new list</span>
         </Button>
+        {showTabInput &&
+          createPortal(
+            <CreateTaskListInput hideCreateTabInput={hideCreateTabInput} createNewTaskList={createNewTaskList} />,
+            document.querySelector("#task-tabs")
+          )}
         <CostumeTooltip text="create new group">
           <Button variant="outline" className="flex items-center gap-3">
             <TbDeviceIpadHorizontalPlus className="w-5 h-5" />
@@ -109,3 +108,10 @@ const TaskNav = ({
 };
 
 export default TaskNav;
+
+// overflow: auto;
+// flex: 1;
+// width: 100%;
+// max-width: 733px;
+
+// min-width: min-content;
