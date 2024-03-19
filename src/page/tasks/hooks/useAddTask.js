@@ -7,24 +7,38 @@ import {
   addTaskSuccess,
 } from "@/features/tasksSlice";
 import getDate from "@/methods/getdate";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useAddTask = () => {
+  // const [activeTabList, setActiveTabList] = useState(null)
 
-  const {activeTaskTab, taskDueDate} = useSelector(store => store.tasks)
+  const { activeTaskTab, taskDueDate } = useSelector((store) => store.tasks);
 
   const { toast } = useToast();
-  const {fullDate} = getDate()
+  const { fullDate } = getDate();
 
   const dispatch = useDispatch();
+
+  const activeTabList = [
+    "my day",
+    "completed",
+    "important",
+    "all",
+    "tasks",
+  ].includes(activeTaskTab)
+    ? null
+    : activeTaskTab;
+
   const handleAddingTask = async (data) => {
     try {
       dispatch(addTaskPending());
       const task = {
         taskName: data.task,
-        isImportant: activeTaskTab === 'important' ? true : false,
+        isImportant: activeTaskTab === "important" ? true : false,
         isCompleted: false,
-        categories: ["tasks", activeTaskTab],
+        categories: activeTabList ? ["tasks", activeTabList] : ["tasks"],
+        relatedTabList: activeTabList,
         dueDate: taskDueDate ? taskDueDate : fullDate,
         taskSteps: [],
         taskNote: "",
@@ -53,6 +67,11 @@ const useAddTask = () => {
       });
     }
   };
+
+  // useEffect(() => {
+
+  //   setActiveTabList()
+  // }, [])
 
   return { handleAddingTask };
 };

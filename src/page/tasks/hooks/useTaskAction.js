@@ -1,10 +1,15 @@
-import { updateTask } from "@/features/tasksSlice";
+import dbService from "@/appwrite/databaseService";
+import env from "@/env/env";
+import { addNewTaskListTab, updateTask } from "@/features/tasksSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const useTaskAction = () => {
-  const [showTabInput, setShowTabInput] = useState(false)
-  const [taskTabLists, setTaskTabLists] = useState([])
+  const [showTabInput, setShowTabInput] = useState(false);
+  const [taskTabListCreate, setTaskTabListCreate] = useState({
+    creating: false,
+    name: "",
+  });
   const dispatch = useDispatch();
   // completion task
   const handleCompletionTask = (taskId, updaterField) => {
@@ -13,19 +18,39 @@ const useTaskAction = () => {
 
   // handle show tab input
   const showCreateTabInput = () => {
-    if(showTabInput) return
-    setShowTabInput(true)
-  }
+    if (showTabInput) return;
+    setShowTabInput(true);
+  };
   const hideCreateTabInput = () => {
-    setShowTabInput(false)
-  }
+    setShowTabInput(false);
+  };
 
   // create new task list
-  const createNewTaskList = (newListName) => {
-    setTaskTabLists([...taskTabLists, newListName])
-  }
+  const createNewTaskList = async (listName) => {
+    try {
+      setTaskTabListCreate({ creating: true, name: listName });
+      if (!listName) throw new Error("list name is required.");
+      const newTaskTabList = await dbService.createDocument(
+        { listName, totalTasks: 0 },
+        env.appwriteTaskTabListCollectionId
+      );
+      dispatch(addNewTaskListTab(newTaskTabList));
+      setTaskTabListCreate({ creating: false, name: "" });
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setTaskTabListCreate({ creating: false, name: "" });
+    }
+  };
 
-  return { handleCompletionTask,showTabInput,  showCreateTabInput, hideCreateTabInput, taskTabLists, createNewTaskList };
+  return {
+    handleCompletionTask,
+    showTabInput,
+    showCreateTabInput,
+    hideCreateTabInput,
+    createNewTaskList,
+    taskTabListCreate,
+  };
 };
 
 export default useTaskAction;

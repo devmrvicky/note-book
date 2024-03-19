@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   activeTaskTab: "my day",
   taskDueDate: null,
+  taskTabLists: []
 };
 
 const tasksSlice = createSlice({
@@ -58,6 +59,12 @@ const tasksSlice = createSlice({
           : task
       );
     },
+    getAllTaskTabList: (state, action) => {
+      state.taskTabLists = action.payload
+    },
+    addNewTaskListTab: (state, action) => {
+      state.taskTabLists.push(action.payload)
+    },
   },
 });
 
@@ -69,6 +76,6 @@ export const {
   addTaskReset,
   changeActiveTab,
   setTaskDueDate,
-  updateTask,
+  updateTask, getAllTaskTabList, addNewTaskListTab
 } = tasksSlice.actions;
 export default tasksSlice.reducer;

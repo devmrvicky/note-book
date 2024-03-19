@@ -7,6 +7,7 @@ const env = {
   appwriteRootCollectionId: String(import.meta.env.VITE_APPWRITE_ROOT_COLLECTION_ID),
   appwriteFolderCollectionId: String(import.meta.env.VITE_APPWRITE_FOLDER_COLLECTION_ID),
   appwriteTaskCollectionId: String(import.meta.env.VITE_APPWRITE_TASK_COLLECTION_ID),
+  appwriteTaskTabListCollectionId: String(import.meta.env.VITE_APPWRITE_TASK_TAB_LIST_COLLECTION_ID),
   appwriteBugCollectionId: String(import.meta.env.VITE_APPWRITE_BUG_COLLECTION_ID),
 };
 

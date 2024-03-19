@@ -8,8 +8,14 @@ import { useSelector } from "react-redux";
 const Tasks = () => {
   const { loading } = useSelector((store) => store.tasks);
 
-  const { activeTab, tasks, myDayTask, importantTask, completedTask } =
-    useTasks();
+  const {
+    activeTab,
+    tasks,
+    myDayTask,
+    importantTask,
+    completedTask,
+    taskListInActiveTab,
+  } = useTasks();
 
   return (
     <div className="relative">
@@ -40,6 +46,12 @@ const Tasks = () => {
               ))}
             {activeTab === "completed" &&
               completedTask.map((task, index) => (
+                <TaskList key={index} {...task} />
+              ))}
+            {activeTab !== "my day" &&
+              activeTab !== "completed" &&
+              activeTab !== "important" &&
+              taskListInActiveTab.map((task, index) => (
                 <TaskList key={index} {...task} />
               ))}
           </>

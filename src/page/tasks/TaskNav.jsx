@@ -21,6 +21,8 @@ import CreateTaskListInput from "./CreateTaskListInput";
 import TaskTabs from "./TaskTabs";
 import { PiList } from "react-icons/pi";
 import TaskTabList from "./TaskTabList";
+import { useSelector } from "react-redux";
+import Draggable from "react-draggable";
 
 const taskNavLists = [
   {
@@ -57,29 +59,40 @@ const TaskNav = ({
   importantTasks,
   completedTasks,
 }) => {
-  const navigate = useNavigate();
-  const { showTabInput, showCreateTabInput, hideCreateTabInput, taskTabLists, createNewTaskList } =
-    useTaskAction();
+  const { taskTabLists } = useSelector((store) => store.tasks);
+  const {
+    showTabInput,
+    showCreateTabInput,
+    hideCreateTabInput,
+    createNewTaskList,
+  } = useTaskAction();
+
+  const handleDragStart = (e) => {
+    e.target.style.cursor = "grab";
+    console.log(e);
+  };
+
   return (
     <nav className="border-b border-zinc-400 flex items-center">
       <div
         id="task-tabs"
-        className="flex items-center overflow-hidden max-w-[733px]"
+        className="flex items-center overflow-x-auto max-w-[733px] cursor-grab select-none border"
+        onDragStart={handleDragStart}
       >
         {taskNavLists.map((tab) => (
-          <TaskTabs 
-            key={tab.name} 
-            {...tab} 
-            activeTab = {activeTab}
-            totalTasks = {totalTasks}
-            myDayTasks = {myDayTasks}
-            importantTasks = {importantTasks}
-            completedTasks = {completedTasks}
+          <TaskTabs
+            key={tab.name}
+            {...tab}
+            activeTab={activeTab}
+            totalTasks={totalTasks}
+            myDayTasks={myDayTasks}
+            importantTasks={importantTasks}
+            completedTasks={completedTasks}
           />
         ))}
         {/* task lists */}
         {taskTabLists.map((list, index) => (
-          <TaskTabList key={index} list={list}/>
+          <TaskTabList key={index} {...list} />
         ))}
       </div>
       {/* tasks btn */}
@@ -94,7 +107,10 @@ const TaskNav = ({
         </Button>
         {showTabInput &&
           createPortal(
-            <CreateTaskListInput hideCreateTabInput={hideCreateTabInput} createNewTaskList={createNewTaskList} />,
+            <CreateTaskListInput
+              hideCreateTabInput={hideCreateTabInput}
+              createNewTaskList={createNewTaskList}
+            />,
             document.querySelector("#task-tabs")
           )}
         <CostumeTooltip text="create new group">

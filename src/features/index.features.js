@@ -33,7 +33,7 @@ import tasksReducer, {
   addTaskFailed,
   addTaskReset,
   changeActiveTab,
-  setTaskDueDate,updateTask
+  setTaskDueDate,updateTask, getAllTaskTabList, addNewTaskListTab
 } from "./tasksSlice";
 
 export {
@@ -70,5 +70,5 @@ export {
   addTaskReset,
   tasksReducer,
   changeActiveTab,
-  setTaskDueDate,updateTask
+  setTaskDueDate,updateTask, getAllTaskTabList, addNewTaskListTab
 };

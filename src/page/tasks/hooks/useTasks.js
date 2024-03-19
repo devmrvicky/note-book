@@ -2,7 +2,11 @@ import dbService from "@/appwrite/databaseService";
 import { useToast } from "@/components/ui/use-toast";
 import env from "@/env/env";
 import { changeCurrentPage } from "@/features/pageSlice";
-import { changeActiveTab, getAllTasks } from "@/features/tasksSlice";
+import {
+  changeActiveTab,
+  getAllTaskTabList,
+  getAllTasks,
+} from "@/features/tasksSlice";
 import getDate from "@/methods/getdate";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +17,7 @@ const useTasks = () => {
   const [myDayTask, setMyDayTask] = useState([]);
   const [importantTask, setImportantTask] = useState([]);
   const [completedTask, setCompletedTask] = useState([]);
+  const [taskListInActiveTab, setTaskListInActiveTab] = useState([]);
 
   const { tasks } = useSelector((store) => store.tasks);
 
@@ -40,11 +45,26 @@ const useTasks = () => {
   }, [location.search, tasks.length]);
 
   useEffect(() => {
+    // filter tasks by list tab name
+    setTaskListInActiveTab(
+      tasks.filter((task) => task.categories[1] === activeTab)
+    );
+  }, [activeTab, tasks.length, location.search]);
+
+  useEffect(() => {
     (async () => {
       try {
         const res = await dbService.getAllDocs(env.appwriteTaskCollectionId);
         if (res) {
           dispatch(getAllTasks(res.documents));
+        }
+        // get all task tab list
+        const taskTabsList = await dbService.getAllDocs(
+          env.appwriteTaskTabListCollectionId
+        );
+        console.log(taskTabsList);
+        if (taskTabsList) {
+          dispatch(getAllTaskTabList(taskTabsList.documents));
         }
       } catch (error) {
         console.log(error.message);
@@ -56,7 +76,14 @@ const useTasks = () => {
     })();
   }, []);
 
-  return { activeTab, tasks, myDayTask, importantTask, completedTask };
+  return {
+    activeTab,
+    tasks,
+    myDayTask,
+    importantTask,
+    completedTask,
+    taskListInActiveTab,
+  };
 };
 
 export default useTasks;
